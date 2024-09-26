@@ -1,3 +1,13 @@
+from utils.vectors import Vector2D
+
+from ray.rllib.env.multi_agent_env import MultiAgentEnv
+from environment_configuration import EnvironmentConfiguration
+from gymnasium.spaces.utils import flatten, flatten_space
+from gymnasium.spaces import Discrete, Box, Dict, Tuple, MultiDiscrete
+import numpy as np
+import random as rnd
+
+
 class CollectTheItems(MultiAgentEnv):
     canvas = None
     CANVAS_WIDTH, CANVAS_HEIGHT = 300.0, 300.0
