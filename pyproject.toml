@@ -8,6 +8,11 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 matplotlib = "^3.9.2"
+ray = "^2.37.0"
+numpy = "^2.1.1"
+gymnasium = "^0.29.1"
+ipycanvas = "^0.13.3"
+pandas = "^2.2.3"
 
 
 [build-system]
