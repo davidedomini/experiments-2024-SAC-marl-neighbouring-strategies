@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "python-experiments-bootstrap"
+name = "src"
 version = "0.1.0"
 description = ""
 authors = ["Davide Domini <davide.domini@unibo.it>"]
@@ -7,6 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+matplotlib = "^3.9.2"
 
 
 [build-system]
