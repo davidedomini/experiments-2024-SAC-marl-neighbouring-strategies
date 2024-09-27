@@ -4,7 +4,7 @@ import random as rnd
 
 def simulate_episode(env, policy, steps, sleep_between_frames=0.3, print_info=False, print_action=False, print_reward=False, print_ob=False,):
     obs, _ = env.reset()
-    env.render()
+    # env.render()
     last_frame = time.time()
     for i in range(steps):
         if print_ob:
@@ -14,7 +14,7 @@ def simulate_episode(env, policy, steps, sleep_between_frames=0.3, print_info=Fa
         obs, reward, terminated, _, infos = env.step(actions)
         time.sleep(max(0, sleep_between_frames - (time.time() - last_frame)))
         last_frame = time.time()
-        env.render()
+        # env.render()
         
         if print_info:
             print(f"info: ", infos)
@@ -31,7 +31,7 @@ def simulate_episode_multipolicy(env, algo, steps, seed=None, sleep_between_fram
         obs, _ = env.reset()
     else:   
         obs, _ = env.reset(seed)
-    env.render()
+    # env.render()
     last_frame = time.time()
     for i in range(steps):
         if print_ob:
@@ -43,7 +43,7 @@ def simulate_episode_multipolicy(env, algo, steps, seed=None, sleep_between_fram
         obs, reward, terminated, _, infos = env.step(actions)
         time.sleep(max(0, sleep_between_frames - (time.time() - last_frame)))
         last_frame = time.time()
-        env.render()
+        # env.render()
         
         if print_info:
             print(f"info: ", infos)
@@ -57,7 +57,7 @@ def simulate_episode_multipolicy(env, algo, steps, seed=None, sleep_between_fram
 
 def simulate_random_episode(env, steps, sleep_between_frames=0.3, print_info=True):
     obs, _ = env.reset()
-    env.render()
+    # env.render()
     action_space = env.action_space
     last_frame = time.time()
     for i in range(steps):
@@ -67,7 +67,7 @@ def simulate_random_episode(env, steps, sleep_between_frames=0.3, print_info=Tru
         obs, reward, _, _, _ = env.step(actions)
         time.sleep(max(0, sleep_between_frames - (time.time() - last_frame)))
         last_frame = time.time()
-        env.render()
+        # env.render()
         if print_info:
             print(f"action: ", actions)
             print(f"reward: ", reward, "\n")
