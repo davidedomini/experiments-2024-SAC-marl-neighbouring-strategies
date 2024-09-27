@@ -1,4 +1,5 @@
 from utils.vectors import Vector2D
+from utils.canvas import CanvasWithBorders
 
 from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from environment_configuration import EnvironmentConfiguration
@@ -6,7 +7,7 @@ from gymnasium.spaces.utils import flatten, flatten_space
 from gymnasium.spaces import Discrete, Box, Dict, Tuple, MultiDiscrete
 import numpy as np
 import random as rnd
-
+from ipycanvas import Canvas, hold_canvas
 
 class CollectTheItems(MultiAgentEnv):
     canvas = None
@@ -269,7 +270,7 @@ class RenderableCollectTheItems(CollectTheItems):
         with hold_canvas():
             if self.canvas == None:
                 self.canvas = CanvasWithBorders(width=self.CANVAS_WIDTH, height=self.CANVAS_HEIGHT)
-                display(self.canvas)
+                # display(self.canvas)
 
             self.canvas.clear()
 

@@ -55,3 +55,5 @@ def compare_metrics(metrics, key_a, key_b=None):
         ax1.title.set_text(key_a)
         ax2.legend(ax2_legend)
         ax2.title.set_text(key_b)
+    
+    plt.save("charts/independent-learning-vs-CTDE.pdf")

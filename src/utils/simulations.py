@@ -99,5 +99,5 @@ def sac_result_format(result):
           
 def dqn_result_format(result):
     return (f"iteration [{result['training_iteration']}] => " +
-        f"episode_reward_mean: {result['sampler_results']['episode_reward_mean']}, " +
-        f"episode_len_mean: {result['sampler_results']['episode_len_mean']}")
+        f"episode_reward_mean: {result['env_runners']['episode_reward_mean']}, " +
+        f"episode_len_mean: {result['env_runners']['episode_len_mean']}")
