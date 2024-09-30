@@ -63,11 +63,6 @@ def DTDE(seed):
         .environment("collect_the_items?algo=DQN&method=DTDE")
     ).build()
 
-    metrics = {
-        "mean_episode_length": [],
-        "mean_reward": []
-    }
-
     data = pd.DataFrame(columns=['Iteration','episode_reward_mean', 'episode_len_mean'])
 
     out = ""
