@@ -42,7 +42,7 @@ def DTDE(seed):
 
     register_env("collect_the_items?algo=DQN&method=DTDE", lambda _: RenderableCollectTheItems(env_config))
 
-    training_iterations = 3
+    training_iterations = 50
 
     policies = {f"agent-{i}": (None, None, None, {}) for i in range(n_agents)}
 
