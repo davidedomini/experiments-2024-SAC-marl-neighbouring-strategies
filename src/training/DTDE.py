@@ -68,9 +68,6 @@ def DTDE(seed):
     out = ""
     for i in range(training_iterations):
         result = algo.train()
-        # clear_output()
-        out += dqn_result_format(result) + "\n"
-        print(out)
         data = pd.concat([data, pd.DataFrame([
                 {'Iteration': i,
                 'episode_reward_mean': result['env_runners']['episode_reward_mean'], 
