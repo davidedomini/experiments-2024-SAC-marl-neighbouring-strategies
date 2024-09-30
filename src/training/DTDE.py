@@ -21,8 +21,10 @@ import random as rnd
 import numpy as np
 import math
 import ray
+import pandas as pd
+import os
 
-def DTDE():
+def DTDE(seed):
     n_agents = 4
 
     env_config = EnvironmentConfiguration(
@@ -40,7 +42,7 @@ def DTDE():
 
     register_env("collect_the_items?algo=DQN&method=DTDE", lambda _: RenderableCollectTheItems(env_config))
 
-    training_iterations = 50
+    training_iterations = 3
 
     policies = {f"agent-{i}": (None, None, None, {}) for i in range(n_agents)}
 
@@ -53,11 +55,11 @@ def DTDE():
             # item_network_update_freq=500,
             double_q=True,
             dueling=True)
-        .debugging(seed=3010)
         .multi_agent(
             policies=policies,
             policy_mapping_fn=(lambda agentId, *args, **kwargs: agentId),
         )
+        .debugging(seed=seed)
         .environment("collect_the_items?algo=DQN&method=DTDE")
     ).build()
 
@@ -66,17 +68,19 @@ def DTDE():
         "mean_reward": []
     }
 
+    data = pd.DataFrame(columns=['Iteration','episode_reward_mean', 'episode_len_mean'])
+
     out = ""
     for i in range(training_iterations):
         result = algo.train()
         # clear_output()
         out += dqn_result_format(result) + "\n"
         print(out)
-    #     metrics["mean_episode_length"].append(result['sampler_results']['episode_len_mean'])
-    #     metrics["mean_reward"].append(result['sampler_results']['episode_reward_mean'])
-    #     simulate_episode_multipolicy(RenderableCollectTheItems(env_config), algo, 500, sleep_between_frames=0.01, print_info=True)
+        data = pd.concat([data, pd.DataFrame([
+                {'Iteration': i,
+                'episode_reward_mean': result['env_runners']['episode_reward_mean'], 
+                'episode_len_mean': result['env_runners']['episode_len_mean']
+                }])])
 
-    # compare_metrics({
-    #     "CTDE": load_json_as_dict("data/collect_the_items-CTDE"),
-    #     "DTDE independent agents": load_json_as_dict("data/collect_the_items-algo=DQN&method=DTDE[01]_v0"),}, 
-    #     "mean_episode_length", "mean_reward")
+    data.to_csv(f'data/results-DTDE-seed_{seed}.csv', index=False)
+ 
