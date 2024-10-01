@@ -27,6 +27,7 @@ import pandas as pd
 import os
 
 n_fixed_nbrs = 3
+n_agents = 4
 
 def get_nbrs(agent, n_neighbours):
     agent_id = int(agent.split("-")[1])
@@ -52,7 +53,7 @@ class AveragePolicyCallback(DefaultCallbacks):
         algorithm.workers.sync_weights()
 
 def DTDE_nn_weigh_averaging(seed):
-    training_iterations = 50
+    training_iterations = 2
     
     env_config = EnvironmentConfiguration(
         n_agents = n_agents,

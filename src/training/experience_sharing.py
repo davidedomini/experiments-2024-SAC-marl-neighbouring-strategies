@@ -27,6 +27,7 @@ import pandas as pd
 import os
 
 n_fixed_nbrs = 1
+n_agents = 4
 
 def get_nbrs(agent, n_neighbours):
     agent_id = int(agent.split("-")[1])
@@ -55,7 +56,7 @@ class ExperienceSharing(DefaultCallbacks):
 
 
 def DTDE_experience_sharing(seed):
-    training_iterations = 50
+    training_iterations = 2
     
     env_config = EnvironmentConfiguration(
         n_agents = n_agents,
@@ -83,7 +84,7 @@ def DTDE_experience_sharing(seed):
             n_step=1,
             # item_network_update_freq=500,
             double_q=True,
-            dueling=True
+            dueling=True,
             replay_buffer_config={"type": "MultiAgentPrioritizedReplayBuffer"})
         .debugging(seed=seed)
         .multi_agent(

@@ -49,7 +49,7 @@ class AveragePolicyCallback(DefaultCallbacks):
 
 
 def DTDE_nn_averaging(seed):
-    training_iterations = 50
+    training_iterations = 2
     
     env_config = EnvironmentConfiguration(
         n_agents = n_agents,
