@@ -6,12 +6,12 @@ authors = ["Davide Domini <davide.domini@unibo.it>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.10"
 matplotlib = "^3.9.2"
-numpy = "^2.1.1"
+numpy = "1.25.2"
 gymnasium = "^0.29.1"
 ipycanvas = "^0.13.3"
-pandas = "^2.2.3"
+pandas = "2.0.3"
 tree = "^0.2.4"
 dm-tree = "^0.1.8"
 pyarrow = "^17.0.0"
@@ -24,7 +24,7 @@ jsonschema = "^4.23.0"
 jsonschema-specifications = "^2023.12.1"
 torch = "^2.4.1"
 tensorboardx = "^2.6.2.2"
-ray = "^2.37.0"
+ray = "2.22.0"
 
 
 [build-system]
