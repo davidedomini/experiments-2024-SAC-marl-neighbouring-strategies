@@ -26,29 +26,35 @@ import ray
 import pandas as pd
 import os
 
-n_agents = 4
+n_fixed_nbrs = 1
 
 def get_nbrs(agent, n_neighbours):
     agent_id = int(agent.split("-")[1])
     return [f"agent-{(agent_id+i)%n_agents}" for i in range(1, n_neighbours+1)]
-
-class AveragePolicyCallback(DefaultCallbacks):
-
+    
+class SyncPolicyCallback(DefaultCallbacks):
     def on_train_result(self, *, algorithm, result: dict, **kwargs):
         local_worker = algorithm.workers.local_worker()
         policies = local_worker.policy_map 
-        n_fixed_nbrs = 3
+
+        mean_episode_reward = result["sampler_results"]["policy_reward_mean"]
+
         new_policies = {}
         for agent in policies.keys():
-            new_policies[agent] = mean_dict([policies[agent].get_weights() for agent in (get_nbrs(agent, n_fixed_nbrs) + [agent])]) 
-    
+            best_policy_in_nn = agent
+            for nbr in get_nbrs(agent, n_fixed_nbrs):
+                if mean_episode_reward[nbr] < mean_episode_reward[best_policy_in_nn]:
+                    best_policy_in_nn = agent
+            new_policies[agent] = copy.deepcopy(
+                policies[best_policy_in_nn].get_weights())        
+            
         for agent in policies.keys():
             policies[agent].set_weights(new_policies[agent])
-    
+
         algorithm.workers.sync_weights()
 
 
-def DTDE_nn_averaging(seed):
+def DTDE_nn_consensus(seed):
     training_iterations = 50
     
     env_config = EnvironmentConfiguration(
@@ -77,13 +83,14 @@ def DTDE_nn_averaging(seed):
             n_step=1,
             # item_network_update_freq=500,
             double_q=True,
-            dueling=True)
+            dueling=True
+            replay_buffer_config={"type": "MultiAgentPrioritizedReplayBuffer"}))
         .debugging(seed=seed)
         .multi_agent(
             policies=policies,
             policy_mapping_fn=(lambda agentId, *args, **kwargs: agentId),
         )
-        .callbacks(AveragePolicyCallback)
+        .callbacks(SyncPolicyCallback)
         .environment("collect_the_items?algo=DQN&method=DTDE")
     ).build()
 
@@ -99,4 +106,4 @@ def DTDE_nn_averaging(seed):
             'episode_len_mean': result['sampler_results']['episode_len_mean']
             }])])
 
-    data.to_csv(f'data/results-DTDE-NN-averaging-seed_{seed}.csv', index=False)
+    data.to_csv(f'data/results-DTDE-NN-consensus-seed_{seed}.csv', index=False)
