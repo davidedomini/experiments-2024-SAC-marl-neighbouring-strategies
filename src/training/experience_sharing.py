@@ -99,7 +99,6 @@ def DTDE_experience_sharing(seed, training_iterations=2):
 
     for i in range(training_iterations):
         result = algo.train()
-        print(f"diocane {i}")
         data = pd.concat([data, pd.DataFrame([
             {'Iteration': i,
             'episode_reward_mean': result['sampler_results']['episode_reward_mean'], 

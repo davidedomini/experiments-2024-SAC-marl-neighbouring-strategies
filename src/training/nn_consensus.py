@@ -56,8 +56,7 @@ class SyncPolicyCallback(DefaultCallbacks):
         algorithm.workers.sync_weights()
 
 
-def DTDE_nn_consensus(seed):
-    training_iterations = 2
+def DTDE_nn_consensus(seed, training_iterations=2):
     
     env_config = EnvironmentConfiguration(
         n_agents = n_agents,
@@ -101,7 +100,6 @@ def DTDE_nn_consensus(seed):
 
     for i in range(training_iterations):
         result = algo.train()
-        print(f"diocane {i}")
         data = pd.concat([data, pd.DataFrame([
             {'Iteration': i,
             'episode_reward_mean': result['sampler_results']['episode_reward_mean'], 
