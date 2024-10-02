@@ -30,13 +30,15 @@ def compute_mean_variance(data_frames, column):
 def plot(data, metric):
     plt.figure(figsize=(12, 8))
 
-    colors_v = sns.color_palette("colorblind", 10) 
+    #colors_v = sns.color_palette("colorblind", 10) 
+    viridis = plt.colormaps['viridis']
+    indexes = np.linspace(0.1, 0.9, len(data))
 
     for i, (mean, variance, exp) in enumerate(data):
-        plt.plot(mean, label=exp, color=colors_v[i])
+        plt.plot(mean, label=exp, color=viridis(indexes[i]))
         upper_bound = mean + np.sqrt(variance)
         lower_bound = mean - np.sqrt(variance)
-        plt.fill_between(mean.index, lower_bound, upper_bound, color=colors_v[i], alpha=0.2)
+        plt.fill_between(mean.index, lower_bound, upper_bound, color=viridis(indexes[i]), alpha=0.2)
 
     plt.xlabel('Episode time')
     plt.ylabel(metric)
@@ -49,7 +51,7 @@ def plot(data, metric):
 charts_dir = 'charts/'
 Path(charts_dir).mkdir(parents=True, exist_ok=True)
 
-experiments = ['CTDE', 'NN-averaging', 'NN-consensus', 'experience-sharing']
+experiments = ['CTDE', 'DTDE', 'NN-averaging', 'NN-consensus', 'experience-sharing']
 
 data_reward = []
 data_ep_len = []
