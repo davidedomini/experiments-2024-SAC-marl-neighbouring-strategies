@@ -15,7 +15,7 @@ if __name__ == "__main__":
         print(f"Start of training with seed {seed}")
         start = time.time()
         # DTDE(seed)
-        # DTDE_nn_averaging(seed)
+        DTDE_nn_averaging(seed)
         DTDE_nn_consensus(seed)
         DTDE_nn_weigh_averaging(seed)
         DTDE_experience_sharing(seed)
