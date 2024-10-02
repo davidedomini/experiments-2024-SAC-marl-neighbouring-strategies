@@ -37,7 +37,7 @@ class AveragePolicyCallback(DefaultCallbacks):
     def on_train_result(self, *, algorithm, result: dict, **kwargs):
         local_worker = algorithm.workers.local_worker()
         policies = local_worker.policy_map 
-        n_fixed_nbrs = 3
+        n_fixed_nbrs = 2
         new_policies = {}
         for agent in policies.keys():
             new_policies[agent] = mean_dict([policies[agent].get_weights() for agent in (get_nbrs(agent, n_fixed_nbrs) + [agent])]) 

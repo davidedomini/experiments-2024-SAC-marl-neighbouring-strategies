@@ -27,7 +27,7 @@ import pandas as pd
 import os
 import copy
 
-n_fixed_nbrs = 1
+n_fixed_nbrs = 2
 n_agents = 4
 
 def get_nbrs(agent, n_neighbours):
