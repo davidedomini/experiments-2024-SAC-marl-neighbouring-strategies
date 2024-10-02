@@ -55,8 +55,7 @@ class ExperienceSharing(DefaultCallbacks):
         trajectory = None
 
 
-def DTDE_experience_sharing(seed):
-    training_iterations = 2
+def DTDE_experience_sharing(seed, training_iterations=2):
     
     env_config = EnvironmentConfiguration(
         n_agents = n_agents,

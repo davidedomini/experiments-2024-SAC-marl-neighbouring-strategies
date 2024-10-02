@@ -52,8 +52,7 @@ class AveragePolicyCallback(DefaultCallbacks):
 
         algorithm.workers.sync_weights()
 
-def DTDE_nn_weigh_averaging(seed):
-    training_iterations = 2
+def DTDE_nn_weigh_averaging(seed, training_iterations=2):
     
     env_config = EnvironmentConfiguration(
         n_agents = n_agents,

@@ -48,7 +48,7 @@ class AveragePolicyCallback(DefaultCallbacks):
         algorithm.workers.sync_weights()
 
 
-def DTDE_nn_averaging(seed):
+def DTDE_nn_averaging(seed, training_iterations=2):
     training_iterations = 2
     
     env_config = EnvironmentConfiguration(
