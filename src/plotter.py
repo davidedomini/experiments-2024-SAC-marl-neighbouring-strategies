@@ -1,16 +1,18 @@
 import os
+import glob
 from pathlib import Path
 import pandas as pd
+import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 
-def read_csv_files(directory):
-    csv_files = [f for f in os.listdir(directory) if f.endswith('.csv')]
+def read_csv_files(directory, experiment):
+
+    csv_files = glob.glob(f"{directory}*{experiment}*.csv")
     data_frames = []
 
     for file in csv_files:
-        file_path = os.path.join(directory, file)
-        df = pd.read_csv(file_path)
+        df = pd.read_csv(file)
         data_frames.append(df)
     
     return data_frames
@@ -24,38 +26,40 @@ def compute_mean_variance(data_frames, column):
     
     return mean_values, variance_values
 
-def plot_mean_variance(mean_values, variance_values, metric):
-    plt.figure(figsize=(10, 6))
 
-    cmap = plt.get_cmap('viridis')
-    color = cmap(0.5)
+def plot(data, metric):
+    plt.figure(figsize=(12, 8))
 
+    colors_v = sns.color_palette("colorblind", 10) 
 
-    plt.plot(mean_values, label=metric, color=color)
+    for i, (mean, variance, exp) in enumerate(data):
+        plt.plot(mean, label=exp, color=colors_v[i])
+        upper_bound = mean + np.sqrt(variance)
+        lower_bound = mean - np.sqrt(variance)
+        plt.fill_between(mean.index, lower_bound, upper_bound, color=colors_v[i], alpha=0.2)
 
-    upper_bound = mean_values + np.sqrt(variance_values)
-    lower_bound = mean_values - np.sqrt(variance_values)
-    plt.fill_between(mean_values.index, lower_bound, upper_bound, color=color, alpha=0.2)
-
-    # Add labels and title
-    plt.xlabel('Time')
+    plt.xlabel('Episode time')
     plt.ylabel(metric)
     plt.title(metric)
-
-    # Add legend
-    # plt.legend()
-
-    # Show plot
+    plt.legend()
     plt.savefig(f"charts/{metric}.pdf")
 
 
 
 charts_dir = 'charts/'
 Path(charts_dir).mkdir(parents=True, exist_ok=True)
-data_frames = read_csv_files('data/')
-    
-# Compute mean and variance for column 'A'
-mean_values, variance_values = compute_mean_variance(data_frames, column='episode_reward_mean')
 
-# Plot the mean and variance
-plot_mean_variance(mean_values, variance_values, 'episode_reward_mean')
+experiments = ['CTDE', 'NN-averaging', 'NN-consensus', 'experience-sharing']
+
+data_reward = []
+data_ep_len = []
+
+for experiment in experiments: 
+    dataframes = read_csv_files('data/', experiment)
+    mean_values, variance_values = compute_mean_variance(dataframes, column='episode_reward_mean')
+    data_reward.append((mean_values, variance_values, experiment))
+    mean_values, variance_values = compute_mean_variance(dataframes, column='episode_len_mean')
+    data_ep_len.append((mean_values, variance_values, experiment))
+
+plot(data_reward, 'episode_reward_mean')
+plot(data_ep_len, 'episode_len_mean')
