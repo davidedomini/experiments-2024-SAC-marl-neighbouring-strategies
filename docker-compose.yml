@@ -17,7 +17,7 @@ services:
     depends_on:
       prepare:
         condition: service_completed_successfully
-    image: davidedomini/marlneighbouring-strategies-simulation:latest
+    image: marlneighbouring-strategies-simulation:latest
     build:
       dockerfile: ./docker/simulation/Dockerfile
       context: .
@@ -30,7 +30,7 @@ services:
         condition: service_completed_successfully
       simulation:
         condition: service_completed_successfully
-    image: danysk/${PROJECT_NAME:-unknown}-charts:${VERSION:-latest}
+    image: marlneighbouring-strategies-charts:latest
     build:
       dockerfile: ./docker/charts/Dockerfile
       context: .
