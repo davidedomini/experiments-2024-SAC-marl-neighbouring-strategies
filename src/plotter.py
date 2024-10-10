@@ -8,7 +8,8 @@ import matplotlib
 from utils.metrics import load_json_as_dict
 
 def read_csv_files(directory, experiment):
-    csv_files = glob.glob(f"{directory}*{experiment}*.csv")
+    csv_files = glob.glob(f"{directory}*{experiment}-seed*.csv")
+    print(f"For {experiment} opened {len(csv_files)} files")
     data_frames = []
     for file in csv_files:
         df = pd.read_csv(file)
@@ -56,7 +57,7 @@ def plot(data, metric):
         upper_bound = mean + np.sqrt(variance)
         lower_bound = mean - np.sqrt(variance)
         plt.fill_between(mean.index, lower_bound, upper_bound, color=viridis(indexes[i]), alpha=0.2)
-    plt.xlabel('Episode time')
+    plt.xlabel('Episode')
     m = beautify_metric(metric)
     plt.ylabel(m)
     # plt.title(m)
@@ -96,7 +97,7 @@ def plot_mean_time_comparison_methods():
         plt.close()
 
 
-def plot_mean_time_comparison_n_agents():
+def plot_communication_overhead():
     nbrs = np.array([i for i in range(1, 11)])
     nn_weight = 2.80 # MB
     trajectory_weight = 0.0891 # 297 (one trajectory step weight [byte]) * 300 (max episode length) = 89100 byte
@@ -119,6 +120,8 @@ def plot_mean_time_comparison_n_agents():
     plt.ylabel('Weight (MB)')
     plt.title('Communication overhead')
     plt.legend()
+    plt.savefig(f"charts/scalability.pdf")
+    plt.close()
 
 
 matplotlib.rcParams.update({'axes.titlesize': 20})
@@ -129,8 +132,8 @@ matplotlib.rcParams.update({'ytick.labelsize': 15})
 charts_dir = 'charts/'
 Path(charts_dir).mkdir(parents=True, exist_ok=True)
 
-experiments = ['CTDE', 'DTDE', 'NN-averaging', 'NN-consensus', 'experience-sharing', 'ppo']
-
+# experiments = ['CTDE', 'DTDE', 'NN-averaging', 'NN-consensus', 'experience-sharing']
+experiments = ['CTDE', 'NN-averaging']
 data_reward = []
 data_ep_len = []
 
@@ -145,3 +148,5 @@ plot(data_reward, 'episode_reward_mean')
 plot(data_ep_len, 'episode_len_mean')
 plot_mean_time_comparison_methods()
 plot_mean_time_comparison_n_agents()
+
+plot_communication_overhead()
