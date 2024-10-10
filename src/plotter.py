@@ -97,7 +97,29 @@ def plot_mean_time_comparison_methods():
 
 
 def plot_mean_time_comparison_n_agents():
-    ...
+    nbrs = np.array([i for i in range(1, 11)])
+    nn_weight = 2.80 # MB
+    trajectory_weight = 0.0891 # 297 (one trajectory step weight [byte]) * 300 (max episode length) = 89100 byte
+    
+    viridis = plt.colormaps['viridis']
+    indexes = np.linspace(0.1, 0.9, 3)
+
+    nn_consensus = np.full_like(nbrs, nn_weight)
+    nn_averaging = nbrs * nn_weight + nbrs * 6.4e-5
+    experience_sharing = nbrs * trajectory_weight
+
+    plt.figure(figsize=(10, 6))
+
+    plt.plot(nbrs, nn_consensus, label='NN Consensus', color=viridis(indexes[0]))
+    plt.plot(nbrs, nn_averaging, label='NN veraging', color=viridis(indexes[1]))
+    plt.plot(nbrs, experience_sharing, label='Experience Sharing', color=viridis(indexes[2]))
+
+    # Add labels and title
+    plt.xlabel('Number of Neighbors')
+    plt.ylabel('Weight (MB)')
+    plt.title('Communication overhead')
+    plt.legend()
+
 
 matplotlib.rcParams.update({'axes.titlesize': 20})
 matplotlib.rcParams.update({'axes.labelsize': 18})
