@@ -132,8 +132,7 @@ matplotlib.rcParams.update({'ytick.labelsize': 15})
 charts_dir = 'charts/'
 Path(charts_dir).mkdir(parents=True, exist_ok=True)
 
-# experiments = ['CTDE', 'DTDE', 'NN-averaging', 'NN-consensus', 'experience-sharing']
-experiments = ['CTDE', 'NN-averaging']
+experiments = ['CTDE', 'DTDE', 'NN-averaging', 'NN-consensus', 'experience-sharing']
 data_reward = []
 data_ep_len = []
 
