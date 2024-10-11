@@ -44,19 +44,21 @@ def beautify_label(label):
         return 'NN Consensus'
     elif label == 'experience-sharing':
         return 'Experience Sharing'
+    elif label == 'ppo':
+        return 'PPO'
     else:
         return 'Unknown label'
 
 
 def plot(data, metric):
     plt.figure(figsize=(10, 6))
-    viridis = plt.colormaps['viridis']
-    indexes = np.linspace(0.1, 0.9, len(data))
+    colorblind = plt.colormaps['tab10']
+    indexes = [0,1,2,4,6,8]
     for i, (mean, variance, exp) in enumerate(data):
-        plt.plot(mean, label=beautify_label(exp), color=viridis(indexes[i]))
+        plt.plot(mean, label=beautify_label(exp), color=colorblind(indexes[i]))
         upper_bound = mean + np.sqrt(variance)
         lower_bound = mean - np.sqrt(variance)
-        plt.fill_between(mean.index, lower_bound, upper_bound, color=viridis(indexes[i]), alpha=0.2)
+        plt.fill_between(mean.index, lower_bound, upper_bound, color=colorblind(indexes[i]), alpha=0.2)
     plt.xlabel('Episode')
     m = beautify_metric(metric)
     plt.ylabel(m)
@@ -79,8 +81,8 @@ def plot_mean_time_comparison_methods():
         data = [(data_ctde, 'CTDE'), (data_dtde, 'DTDE'), (data_nn_averaging, 'NN Averaging'), (data_nn_consensus, 'NN Consensus'), (data_experience_sharing, 'Experience Sharing')]
 
         fig, ax = plt.subplots()
-        viridis = plt.colormaps['viridis']
-        indexes = np.linspace(0.1, 0.9, len(data))
+        colorblind = plt.colormaps['tab10']
+        indexes = [0,2,4,6,8]
 
         for i, (data, experiment) in enumerate(data):
             ax.boxplot(data,
@@ -88,7 +90,7 @@ def plot_mean_time_comparison_methods():
             notch=True,
             label=experiment,
             widths=0.5,
-            patch_artist=True, boxprops={"facecolor": viridis(indexes[i])},)
+            patch_artist=True, boxprops={"facecolor": colorblind(indexes[i])},)
         plt.legend(loc='upper right')
         plt.ylabel('Mean Episode Length')
         plt.title(f'{n_agents} Agents')
@@ -132,7 +134,7 @@ matplotlib.rcParams.update({'ytick.labelsize': 15})
 charts_dir = 'charts/'
 Path(charts_dir).mkdir(parents=True, exist_ok=True)
 
-experiments = ['CTDE', 'DTDE', 'NN-averaging', 'NN-consensus', 'experience-sharing']
+experiments = ['CTDE', 'DTDE', 'NN-averaging', 'NN-consensus', 'experience-sharing', 'ppo']
 data_reward = []
 data_ep_len = []
 
@@ -146,6 +148,4 @@ for experiment in experiments:
 plot(data_reward, 'episode_reward_mean')
 plot(data_ep_len, 'episode_len_mean')
 plot_mean_time_comparison_methods()
-plot_mean_time_comparison_n_agents()
-
 plot_communication_overhead()
